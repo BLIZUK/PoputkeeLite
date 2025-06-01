@@ -7,7 +7,7 @@ namespace PoputkeeLite
 {
     public partial class App : Application
     {
-        public static User CurrentUser { get; set; }
+        public static User? CurrentUser { get; set; }
 
         // Глобальные сервисы
         //public static AuthService AuthService { get; } = new AuthService();
@@ -18,16 +18,21 @@ namespace PoputkeeLite
             base.OnStartup(e);
             DataService.InitializeDataFiles();
 
-            // Проверка сохраненной сессии
+            // Удаляем стандартный StartupUri из App.xaml
+
             var savedUser = SessionService.LoadSession();
             if (savedUser != null)
             {
                 CurrentUser = savedUser;
-                new MainWindow().Show();
+                var mainWindow = new MainWindow();
+                mainWindow.Show();
+                Application.Current.MainWindow = mainWindow;
             }
             else
             {
-                new LoginView().Show();
+                var loginWindow = new LoginView();
+                loginWindow.Show();
+                Application.Current.MainWindow = loginWindow;
             }
         }
     }

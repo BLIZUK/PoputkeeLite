@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 
 namespace PoputkeeLite.Core.Services
 {
@@ -14,11 +15,19 @@ namespace PoputkeeLite.Core.Services
 
         public static void InitializeDataFiles()
         {
+            try
+            {
             Directory.CreateDirectory(DataFolder);
             if (!File.Exists(UsersPath)) File.Create(UsersPath).Close();
             if (!File.Exists(TripsPath)) File.Create(TripsPath).Close();
             if (!File.Exists(BookingsPath)) File.Create(BookingsPath).Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
         }
+
 
         public static List<string> ReadAllLines(string filePath)
         {

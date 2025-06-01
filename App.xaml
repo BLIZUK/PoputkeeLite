@@ -2,8 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PoputkeeLite" 
-             xmlns:coreCommon="clr-namespace:PoputkeeLite.Core.Common"
-             StartupUri="Desktop/Views/LoginView.xaml">
+             xmlns:coreCommon="clr-namespace:PoputkeeLite.Core.Common">
+
     <Application.Resources>
 
         <!-- Стиль для кнопок навигации в сайдбаре -->

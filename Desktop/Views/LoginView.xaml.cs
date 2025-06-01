@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PoputkeeLite.Desktop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,10 @@ namespace PoputkeeLite.Desktop.Views
         public LoginView()
         {
             InitializeComponent();
-            DataContext = new Desktop.ViewModels.LoginViewModel();
+            DataContext = new LoginViewModel();
+
+            // Устанавливаем фокус на поле ввода
+            Loaded += (s, e) => LoginBox.Focus();
         }
     }
 }

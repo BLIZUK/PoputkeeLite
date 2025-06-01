@@ -7,6 +7,7 @@ using System.Windows.Input;
 using PoputkeeLite.Desktop.Views;
 using PoputkeeLite.Core.Models;
 using PoputkeeLite.Core.Services;
+using System.Windows.Threading;
 
 
 namespace PoputkeeLite.Desktop.ViewModels
@@ -21,20 +22,33 @@ namespace PoputkeeLite.Desktop.ViewModels
             LoginCommand = new RelayCommand(_ => Authenticate());
         }
 
+
         private void Authenticate()
         {
-            if (string.IsNullOrWhiteSpace(Login)) return;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Login))
+                {
+                    MessageBox.Show("Введите логин");
+                    return;
+                }
 
-            // Чтение/создание пользователя
-            var user = GetOrCreateUser(Login);
+                var user = GetOrCreateUser(Login);
+                SessionService.SaveSession(user);
+                App.CurrentUser = user;
 
-            // Сохранение сессии
-            SessionService.SaveSession(user);
-            App.CurrentUser = user;
-
-            // Переход в главное окно
-            new MainWindow().Show();
-            CloseCurrentWindow();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    var mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    Application.Current.MainWindow = mainWindow;
+                    CloseCurrentWindow();
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка входа: {ex.Message}");
+            }
         }
 
         private User GetOrCreateUser(string login)
@@ -70,8 +84,14 @@ namespace PoputkeeLite.Desktop.ViewModels
 
         private static void CloseCurrentWindow()
         {
-            var window = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
-            window?.Close();
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is LoginView)
+                {
+                    window.Close();
+                    break;
+                }
+            }
         }
     }
 }
