@@ -1,0 +1,80 @@
+﻿<!-- Views/TripView.xaml -->
+<UserControl x:Class="PoputkeeLite.Desktop.Views.TripView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PoputkeeLite.Desktop.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Форма создания поездки -->
+        <GroupBox Grid.Row="0" Header="Создать поездку" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="5" Width="200">
+                    <TextBlock Text="Откуда:"/>
+                    <TextBox Text="{Binding From}" Margin="0,5"/>
+                </StackPanel>
+
+                <StackPanel Margin="5" Width="200">
+                    <TextBlock Text="Куда:"/>
+                    <TextBox Text="{Binding To}" Margin="0,5"/>
+                </StackPanel>
+
+                <StackPanel Margin="5" Width="150">
+                    <TextBlock Text="Дата:"/>
+                    <DatePicker SelectedDate="{Binding Date}" Margin="0,5"/>
+                </StackPanel>
+
+                <StackPanel Margin="5" Width="100">
+                    <TextBlock Text="Время:"/>
+                    <TextBox Text="{Binding Time, StringFormat=hh\\:mm}" Margin="0,5"/>
+                </StackPanel>
+
+                <StackPanel Margin="5" Width="100">
+                    <TextBlock Text="Места:"/>
+                    <TextBox Text="{Binding SeatsAvailable}" Margin="0,5"/>
+                </StackPanel>
+
+                <Button Content="Создать" Command="{Binding CreateTripCommand}" 
+                        Margin="5" Padding="10,5" VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Список доступных поездок -->
+        <GroupBox Grid.Row="1" Header="Доступные поездки" Margin="10">
+            <DockPanel>
+                <Button DockPanel.Dock="Bottom" Content="Обновить" 
+                        Command="{Binding RefreshTripsCommand}" Margin="5" Padding="10,3"/>
+
+                <ListView ItemsSource="{Binding AvailableTrips}" SelectedItem="{Binding SelectedTrip}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Откуда" DisplayMemberBinding="{Binding From}" Width="120"/>
+                            <GridViewColumn Header="Куда" DisplayMemberBinding="{Binding To}" Width="120"/>
+                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding Date, StringFormat=d}" Width="100"/>
+                            <GridViewColumn Header="Время" DisplayMemberBinding="{Binding Time, StringFormat=hh\\:mm}" Width="80"/>
+                            <GridViewColumn Header="Места" DisplayMemberBinding="{Binding SeatsAvailable}" Width="60"/>
+                            <GridViewColumn Header="Водитель" DisplayMemberBinding="{Binding DriverLogin}" Width="120"/>
+                            <GridViewColumn Header="Действие" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Забронировать" 
+                                                Command="{Binding DataContext.BookTripCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                Margin="2" Padding="5,2"
+                                                IsEnabled="{Binding SeatsAvailable, Converter={StaticResource GreaterThanZeroConverter}}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>
