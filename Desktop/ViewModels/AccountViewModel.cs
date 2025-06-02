@@ -1,5 +1,4 @@
-﻿// ViewModels/AccountViewModel.cs
-using PoputkeeLite.Core.Common;
+﻿using PoputkeeLite.Core.Common;
 using PoputkeeLite.Core.Services;
 using PoputkeeLite.Desktop.Views;
 using System.Windows;
@@ -9,51 +8,122 @@ namespace PoputkeeLite.Desktop.ViewModels
 {
     public class AccountViewModel : BaseViewModel
     {
-
-        public bool HasErrors => !ValidateEmail(Email) || !ValidatePhone(Phone);
-
+        #region Приватные поля
         private string _name;
         private string _email;
         private string _phone;
+        #endregion
 
-        public int CreatedTripsCount { get; private set; }
-        public int ActiveBookingsCount { get; private set; }
-        public int CompletedBookingsCount { get; private set; }
-
+        #region Публичные свойства
+        /// <summary>
+        /// Логин текущего пользователя
+        /// </summary>
         public string Login => App.CurrentUser?.Login ?? "Неизвестно";
 
+        /// <summary>
+        /// Имя пользователя
+        /// </summary>
         public string Name
         {
             get => _name;
             set { _name = value; OnPropertyChanged(); }
         }
 
+        /// <summary>
+        /// Email пользователя
+        /// </summary>
         public string Email
         {
             get => _email;
             set { _email = value; OnPropertyChanged(); }
         }
 
+        /// <summary>
+        /// Телефон пользователя
+        /// </summary>
         public string Phone
         {
             get => _phone;
             set { _phone = value; OnPropertyChanged(); }
         }
 
-        public ICommand SaveCommand { get; }
-        public ICommand LogoutCommand { get; }
+        /// <summary>
+        /// Количество созданных поездок
+        /// </summary>
+        public int CreatedTripsCount { get; private set; }
 
+        /// <summary>
+        /// Количество активных бронирований
+        /// </summary>
+        public int ActiveBookingsCount { get; private set; }
+
+        /// <summary>
+        /// Количество завершенных бронирований
+        /// </summary>
+        public int CompletedBookingsCount { get; private set; }
+
+        /// <summary>
+        /// Флаг наличия ошибок валидации
+        /// </summary>
+        public bool HasErrors => !ValidateEmail(Email) || !ValidatePhone(Phone);
+
+        /// <summary>
+        /// Сообщение об ошибках валидации
+        /// </summary>
+        public string ErrorMessage
+        {
+            get
+            {
+                if (!ValidateEmail(Email)) return "Укажите корректный email";
+                if (!ValidatePhone(Phone)) return "Укажите корректный телефон";
+                return null;
+            }
+        }
+        #endregion
+
+        #region Команды
+        /// <summary>
+        /// Команда сохранения данных пользователя
+        /// </summary>
+        public ICommand SaveCommand { get; }
+
+        /// <summary>
+        /// Команда выхода из системы
+        /// </summary>
+        public ICommand LogoutCommand { get; }
+        #endregion
+
+        #region Конструктор
         public AccountViewModel()
         {
-            // Загружаем данные пользователя
+            // Инициализация данных
             LoadUserData();
-            // Загужаем статистику
             LoadStatistics();
 
+            // Инициализация команд
             SaveCommand = new RelayCommand(_ => SaveUserData());
             LogoutCommand = new RelayCommand(_ => Logout());
         }
+        #endregion
 
+        #region Методы загрузки данных
+        /// <summary>
+        /// Загрузка данных пользователя
+        /// </summary>
+        private void LoadUserData()
+        {
+            var user = App.CurrentUser;
+            if (user != null)
+            {
+                Name = user.Name;
+                Email = user.Email;
+                Phone = user.Phone;
+            }
+        }
+
+        /// <summary>
+        /// Загрузка статистики пользователя
+        /// </summary>
         private void LoadStatistics()
         {
             var tripService = new TripService();
@@ -68,36 +138,17 @@ namespace PoputkeeLite.Desktop.ViewModels
             ActiveBookingsCount = bookings.Count(b => b.Status == "Active");
             CompletedBookingsCount = bookings.Count(b => b.Status == "Completed");
 
+            // Уведомление об изменении свойств
             OnPropertyChanged(nameof(CreatedTripsCount));
             OnPropertyChanged(nameof(ActiveBookingsCount));
             OnPropertyChanged(nameof(CompletedBookingsCount));
         }
+        #endregion
 
-        public string ErrorMessage
-        {
-            get
-            {
-                if (!ValidateEmail(Email)) return "Укажите корректный email";
-                if (!ValidatePhone(Phone)) return "Укажите корректный телефон";
-                return null;
-            }
-        }
-
-        private void LoadUserData()
-        {
-            var user = App.CurrentUser;
-            if (user != null)
-            {
-                Name = user.Name;
-                Email = user.Email;
-                Phone = user.Phone;
-            }
-        }
-        private void ShowError(string message)
-        {
-            MessageBox.Show(message, "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
-
+        #region Методы работы с пользователем
+        /// <summary>
+        /// Сохранение данных пользователя
+        /// </summary>
         private void SaveUserData()
         {
             if (HasErrors)
@@ -106,17 +157,20 @@ namespace PoputkeeLite.Desktop.ViewModels
                 return;
             }
 
-            // Обновляем данные пользователя
+            // Обновление данных пользователя
             App.CurrentUser.Name = Name;
             App.CurrentUser.Email = Email;
             App.CurrentUser.Phone = Phone;
 
-            // Сохраняем в файл
+            // Сохранение в файл
             UpdateUserInFile();
 
             MessageBox.Show("Данные сохранены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        /// <summary>
+        /// Обновление данных пользователя в файле
+        /// </summary>
         private void UpdateUserInFile()
         {
             var lines = DataService.ReadAllLines(DataService.UsersFilePath);
@@ -139,6 +193,9 @@ namespace PoputkeeLite.Desktop.ViewModels
             SessionService.SaveSession(App.CurrentUser);
         }
 
+        /// <summary>
+        /// Выход из системы
+        /// </summary>
         private void Logout()
         {
             SessionService.ClearSession();
@@ -148,5 +205,16 @@ namespace PoputkeeLite.Desktop.ViewModels
             Application.Current.MainWindow?.Close();
             Application.Current.MainWindow = new LoginView();
         }
+        #endregion
+
+        #region Вспомогательные методы
+        /// <summary>
+        /// Отображение ошибки валидации
+        /// </summary>
+        private void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        #endregion
     }
 }

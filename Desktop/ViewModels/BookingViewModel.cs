@@ -70,14 +70,19 @@ namespace PoputkeeLite.Desktop.ViewModels
 
         private void CancelSelectedBooking()
         {
-            if (SelectedActiveBooking == null) return;
+            if (NotificationService.ShowConfirmation("Вы уверены, что хотите отменить бронирование?"))
+            {
+                if (SelectedActiveBooking == null) return;
 
-            var bookingService = new BookingService();
-            bookingService.CancelBooking(
-                SelectedActiveBooking.TripId,
-                App.CurrentUser.Login);
+                var bookingService = new BookingService();
+                bookingService.CancelBooking(
+                    SelectedActiveBooking.TripId,
+                    App.CurrentUser.Login);
 
-            RefreshBookings();
+                RefreshBookings();
+                NotificationService.ShowInfo("Бронирование отменено");
+            }
+
         }
     }
 }

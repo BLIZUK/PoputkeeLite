@@ -30,6 +30,9 @@ namespace PoputkeeLite.ViewModels
         private string _filterTo;
         private DateTime? _filterDate;
 
+
+        private List<Trip> _allTrips = new List<Trip>();
+
         public string From
         {
             get => _from;
@@ -68,15 +71,17 @@ namespace PoputkeeLite.ViewModels
 
         public ObservableCollection<Trip> AvailableTrips { get; } = new ObservableCollection<Trip>();
 
-        public ICommand CreateTripCommand { get; }
+        public ICommand CreateTripCommand { get; set; }
         public ICommand BookTripCommand { get; }
         public ICommand RefreshTripsCommand { get; }
+        public ICommand ResetFiltersCommand { get; }
 
         public TripViewModel()
         {
             CreateTripCommand = new RelayCommand(_ => CreateTrip());
             BookTripCommand = new RelayCommand(_ => BookSelectedTrip());
             RefreshTripsCommand = new RelayCommand(_ => RefreshTrips());
+            ResetFiltersCommand = new RelayCommand(_ => ResetFilters());
 
             RefreshTrips(); // Загружаем поездки при инициализации
         }
@@ -103,6 +108,8 @@ namespace PoputkeeLite.ViewModels
                 ShowError(ErrorMessage);
                 return;
             }
+
+
             if (string.IsNullOrWhiteSpace(From)) return;
             if (string.IsNullOrWhiteSpace(To)) return;
             if (SeatsAvailable <= 0) return;
@@ -119,6 +126,7 @@ namespace PoputkeeLite.ViewModels
 
             var tripService = new TripService();
             tripService.AddTrip(newTrip);
+            NotificationService.ShowInfo("Поездка успешно создана!");
 
             // Очистка формы
             From = string.Empty;
@@ -192,7 +200,12 @@ namespace PoputkeeLite.ViewModels
             }
         }
 
-        private List<Trip> _allTrips = new List<Trip>();
+        private void ResetFilters()
+        {
+            FilterFrom = string.Empty;
+            FilterTo = string.Empty;
+            FilterDate = null;
+        }
 
     }
 }

@@ -4,10 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors="clr-namespace:PoputkeeLite.Desktop.Behaviors"
              xmlns:local="clr-namespace:PoputkeeLite.Desktop.Views"
+             xmlns:Water="clr-namespace:PoputkeeLite.Core.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="950" Background="#FFB7FBD4">
+             d:DesignHeight="450" d:DesignWidth="950" Background="#FFA0E4DF">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -43,16 +45,22 @@
                 </StackPanel>
 
                 <Button Content="Создать" Command="{Binding CreateTripCommand}" 
-                        Margin="5" Padding="10,5" VerticalAlignment="Bottom"/>
+                        Margin="20" Padding="20,3" VerticalAlignment="Top"/>
             </StackPanel>
         </GroupBox>
         
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+        <StackPanel Orientation="Horizontal" Margin="17,80,0,10">
             <TextBlock Text="Фильтры:" VerticalAlignment="Center" Margin="5,0"/>
-            <TextBox Text="{Binding FilterFrom, UpdateSourceTrigger=PropertyChanged}" 
-             Width="120" Margin="5" Watermark="Откуда"/>
-            <TextBox Text="{Binding FilterTo, UpdateSourceTrigger=PropertyChanged}" 
-             Width="120" Margin="5" Watermark="Куда"/>
+            <TextBox Text="{Binding FilterFrom}" Width="120" Margin="5">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxWatermarkBehavior Watermark="Откуда"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBox Text="{Binding FilterTo}" Width="120" Margin="5">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxWatermarkBehavior Watermark="Куда"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
             <DatePicker SelectedDate="{Binding FilterDate}" Width="150" Margin="5"/>
             <Button Content="Сбросить" Command="{Binding ResetFiltersCommand}" Margin="5" Padding="10,3"/>
         </StackPanel>
@@ -72,7 +80,7 @@
                             <GridViewColumn Header="Время" DisplayMemberBinding="{Binding Time, StringFormat=hh\\:mm}" Width="80"/>
                             <GridViewColumn Header="Места" DisplayMemberBinding="{Binding SeatsAvailable}" Width="60"/>
                             <GridViewColumn Header="Водитель" DisplayMemberBinding="{Binding DriverLogin}" Width="120"/>
-                            <GridViewColumn Header="Действие" Width="100">
+                            <GridViewColumn Header="Действие" Width="120">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="Забронировать" 

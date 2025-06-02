@@ -9,7 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Desktop\Views\icons8-car-96.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Desktop\Views\icons8-car-96.png" />
   </ItemGroup>
 
 </Project>

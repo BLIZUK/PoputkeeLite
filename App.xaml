@@ -20,6 +20,11 @@
             <!-- Убираем границу -->
         </Style>
 
+        <Style x:Key="WatermarkStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+        </Style>
+
         <coreCommon:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
         <coreCommon:NotNullConverter x:Key="NotNullConverter"/>
 

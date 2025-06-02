@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using PoputkeeLite.Desktop.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using PoputkeeLite.ViewModels;
+
 
 namespace PoputkeeLite.Desktop.Views
 {
@@ -22,6 +18,7 @@ namespace PoputkeeLite.Desktop.Views
         public TripView()
         {
             InitializeComponent();
+            DataContext = new TripViewModel();
         }
     }
 }
