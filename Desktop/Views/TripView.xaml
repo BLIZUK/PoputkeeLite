@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+
              xmlns:local="clr-namespace:PoputkeeLite.Desktop.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="950" Background="#FFB7FBD4">
@@ -45,7 +46,17 @@
                         Margin="5" Padding="10,5" VerticalAlignment="Bottom"/>
             </StackPanel>
         </GroupBox>
-
+        
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Фильтры:" VerticalAlignment="Center" Margin="5,0"/>
+            <TextBox Text="{Binding FilterFrom, UpdateSourceTrigger=PropertyChanged}" 
+             Width="120" Margin="5" Watermark="Откуда"/>
+            <TextBox Text="{Binding FilterTo, UpdateSourceTrigger=PropertyChanged}" 
+             Width="120" Margin="5" Watermark="Куда"/>
+            <DatePicker SelectedDate="{Binding FilterDate}" Width="150" Margin="5"/>
+            <Button Content="Сбросить" Command="{Binding ResetFiltersCommand}" Margin="5" Padding="10,3"/>
+        </StackPanel>
+        
         <!-- Список доступных поездок -->
         <GroupBox Grid.Row="1" Header="Доступные поездки" Margin="10">
             <DockPanel>

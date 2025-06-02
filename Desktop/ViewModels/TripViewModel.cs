@@ -25,6 +25,11 @@ namespace PoputkeeLite.ViewModels
         private int _seatsAvailable = 1;
         private Trip _selectedTrip;
 
+        //NEW
+        private string _filterFrom;
+        private string _filterTo;
+        private DateTime? _filterDate;
+
         public string From
         {
             get => _from;
@@ -142,6 +147,10 @@ namespace PoputkeeLite.ViewModels
                 .Where(t => t.Date >= DateTime.Today) // только будущие поездки
                 .ToList();
 
+            _allTrips = tripService.GetAllTrips().Where(t => t.Date >= DateTime.Today).ToList();
+
+            FilterTrips();
+
             AvailableTrips.Clear();
             foreach (var trip in trips)
             {
@@ -149,6 +158,41 @@ namespace PoputkeeLite.ViewModels
             }
         }
 
+        //NEW
+        public string FilterFrom
+        {
+            get => _filterFrom;
+            set { _filterFrom = value; OnPropertyChanged(); FilterTrips(); }
+        }
+
+        public string FilterTo
+        {
+            get => _filterTo;
+            set { _filterTo = value; OnPropertyChanged(); FilterTrips(); }
+        }
+
+        public DateTime? FilterDate
+        {
+            get => _filterDate;
+            set { _filterDate = value; OnPropertyChanged(); FilterTrips(); }
+        }
+
+        private void FilterTrips()
+        {
+            var trips = _allTrips.Where(t =>
+                (string.IsNullOrEmpty(FilterFrom) || t.From.Contains(FilterFrom, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(FilterTo) || t.To.Contains(FilterTo, StringComparison.OrdinalIgnoreCase)) &&
+                (!FilterDate.HasValue || t.Date.Date == FilterDate.Value.Date)
+            ).ToList();
+
+            AvailableTrips.Clear();
+            foreach (var trip in trips)
+            {
+                AvailableTrips.Add(trip);
+            }
+        }
+
+        private List<Trip> _allTrips = new List<Trip>();
 
     }
 }
