@@ -21,6 +21,7 @@
         </Style>
 
         <coreCommon:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter"/>
+        <coreCommon:NotNullConverter x:Key="NotNullConverter"/>
 
     </Application.Resources>
 </Application>

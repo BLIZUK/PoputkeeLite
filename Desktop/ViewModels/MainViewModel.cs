@@ -28,8 +28,8 @@ namespace PoputkeeLite.Desktop.ViewModels
             CurrentView = new TripView();
 
             NavigateToTripsCommand = new RelayCommand(_ => CurrentView = new TripView());
-            //NavigateToBookingsCommand = new RelayCommand(_ => CurrentView = new BookingView());
-            //NavigateToAccountCommand = new RelayCommand(_ => CurrentView = new AccountView());
+            NavigateToBookingsCommand = new RelayCommand(_ => CurrentView = new BookingView());
+            NavigateToAccountCommand = new RelayCommand(_ => CurrentView = new AccountView());
         }
     }
 }

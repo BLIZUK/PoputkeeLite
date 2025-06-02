@@ -1,15 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Models/Booking.cs (обновление)
+using PoputkeeLite.Core.Models;
+using System.ComponentModel;
 
 namespace PoputkeeLite.Core.Models
 {
-    public class Booking
+    public class Booking : INotifyPropertyChanged
     {
         public int TripId { get; set; }
         public string PassengerLogin { get; set; }
-        public string Status { get; set; } // Active, Completed, Canceled
+
+        private string _status;
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
+                OnPropertyChanged(nameof(Status));
+            }
+        }
+
+        private Trip _tripDetails;
+        public Trip TripDetails
+        {
+            get => _tripDetails;
+            set
+            {
+                _tripDetails = value;
+                OnPropertyChanged(nameof(TripDetails));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

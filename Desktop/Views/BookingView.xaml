@@ -1,0 +1,53 @@
+﻿<!-- Views/BookingView.xaml -->
+<UserControl x:Class="PoputkeeLite.Desktop.Views.BookingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Активные бронирования -->
+        <GroupBox Grid.Row="0" Header="Активные бронирования" Margin="10">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Обновить" Command="{Binding RefreshBookingsCommand}" Margin="5" Padding="10,3"/>
+                    <Button Content="Отменить бронь" Command="{Binding CancelBookingCommand}" 
+                            Margin="5" Padding="10,3" IsEnabled="{Binding SelectedActiveBooking, Converter={StaticResource NotNullConverter}}"/>
+                </StackPanel>
+
+                <ListView ItemsSource="{Binding ActiveBookings}" SelectedItem="{Binding SelectedActiveBooking}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Откуда" DisplayMemberBinding="{Binding TripDetails.From}" Width="120"/>
+                            <GridViewColumn Header="Куда" DisplayMemberBinding="{Binding TripDetails.To}" Width="120"/>
+                            <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding TripDetails.Date, StringFormat=d}" Width="100"/>
+                            <GridViewColumn Header="Время" DisplayMemberBinding="{Binding TripDetails.Time, StringFormat=hh\\:mm}" Width="80"/>
+                            <GridViewColumn Header="Водитель" DisplayMemberBinding="{Binding TripDetails.DriverLogin}" Width="120"/>
+                            <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="100"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+        </GroupBox>
+
+        <!-- Архив бронирований -->
+        <GroupBox Grid.Row="1" Header="Архив бронирований" Margin="10">
+            <ListView ItemsSource="{Binding ArchivedBookings}" SelectedItem="{Binding SelectedArchivedBooking}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Откуда" DisplayMemberBinding="{Binding TripDetails.From}" Width="120"/>
+                        <GridViewColumn Header="Куда" DisplayMemberBinding="{Binding TripDetails.To}" Width="120"/>
+                        <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding TripDetails.Date, StringFormat=d}" Width="100"/>
+                        <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+    </Grid>
+</UserControl>

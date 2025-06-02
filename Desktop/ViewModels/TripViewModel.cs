@@ -6,12 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PoputkeeLite.ViewModels
 {
     public class TripViewModel : BaseViewModel
     {
+        public bool HasErrors =>
+        !ValidateRequired(From) ||
+        !ValidateRequired(To) ||
+        !ValidatePositiveNumber(SeatsAvailable);
+
         private string _from;
         private string _to;
         private DateTime _date = DateTime.Today;
@@ -70,8 +76,28 @@ namespace PoputkeeLite.ViewModels
             RefreshTrips(); // Загружаем поездки при инициализации
         }
 
+        public string ErrorMessage
+        {
+            get
+            {
+                if (!ValidateRequired(From)) return "Укажите пункт отправления";
+                if (!ValidateRequired(To)) return "Укажите пункт назначения";
+                if (!ValidatePositiveNumber(SeatsAvailable)) return "Количество мест должно быть положительным числом";
+                return null;
+            }
+        }
+        private void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
         private void CreateTrip()
         {
+            if (HasErrors)
+            {
+                ShowError(ErrorMessage);
+                return;
+            }
             if (string.IsNullOrWhiteSpace(From)) return;
             if (string.IsNullOrWhiteSpace(To)) return;
             if (SeatsAvailable <= 0) return;
@@ -122,5 +148,7 @@ namespace PoputkeeLite.ViewModels
                 AvailableTrips.Add(trip);
             }
         }
+
+
     }
 }

@@ -60,7 +60,7 @@ namespace PoputkeeLite.Core.Services
             }
         }
 
-        private void SaveAllTrips(List<Trip> trips)
+        public void SaveAllTrips(List<Trip> trips)
         {
             var lines = trips.Select(t => $"{t.Id}|{t.DriverLogin}|{t.From}|{t.To}|{t.Date:yyyy-MM-dd}|{t.Time}|{t.SeatsAvailable}");
             DataService.WriteAllLines(DataService.TripsFilePath, lines.ToList());
