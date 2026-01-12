@@ -33,9 +33,13 @@
 
 ## Пример работы продукта
 
+1. Вход в аккауент
 ![Вход в аккауент](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image1.png)
+2. Поиск и создание поездок
 ![Поиск и создание поездок](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image2.png)
+3. Управление бронями
 ![Управление бронями](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image3.png)
+4. Редактирование аккаунта
 ![Редактирование аккаунта](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image4.png)
 
 ## Структурное дерево проекта
