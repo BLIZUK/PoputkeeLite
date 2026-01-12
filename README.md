@@ -34,7 +34,10 @@
 ## Пример работы продукта
 
 1. Вход в аккауент
+
+   
 ![Вход в аккауент](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image1.png)
+
 2. Поиск и создание поездок
 ![Поиск и создание поездок](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image2.png)
 3. Управление бронями
