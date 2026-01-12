@@ -67,3 +67,7 @@ PoputkeeLite/
 ```
 ## 🔹Пример работы продукта
 
+![Вход в аккауент](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image1.png)
+![Поиск и создание поездок](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image2.png)
+![Управление бронями](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image3.png)
+![Редактирование аккаунта](https://github.com/BLIZUK/PoputkeeLite/blob/master/images/image4.png)
