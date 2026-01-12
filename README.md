@@ -21,16 +21,6 @@
 2. WPF
 3. System.IO (File Storage)
 
-4. Архитектура:
-    - MVVM (Model-View-ViewModel) + Dependency Injection.
-    - Repository Pattern + Unit of Work.
-    - MediatR (опционально, для CQRS).
-
-6. Дополнительно:
-    - AutoMapper (для маппинга DTO).
-    - FluentValidation (валидация данных).
-    - Serilog (логгирование).
-
 ## Пример работы продукта
 
 1. Вход в аккауент
